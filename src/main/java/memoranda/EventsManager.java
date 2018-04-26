@@ -96,19 +96,39 @@ public class EventsManager {
 		return false;
 	}
 
+	/*
+	 * Task 1 - Complexity - Question 3.
+	 * Modifying this method to reduce complexity. 
+	 * Commented out the for loop and moved it to a private method. 
+	 */
 	public static Collection getEventsForDate(CalendarDate date) {
 		Vector v = new Vector();
 		Day d = getDay(date);
 		if (d != null) {
+			v = getEventsVector(d);		// new, replaces for loop below. 
+			/*
 			Elements els = d.getElement().getChildElements("event");
 			for (int i = 0; i < els.size(); i++)
 				v.add(new EventImpl(els.get(i)));
+			*/
 		}
 		Collection r = getRepeatableEventsForDate(date);
 		if (r.size() > 0)
 			v.addAll(r);
 		//EventsVectorSorter.sort(v);
 		Collections.sort(v);
+		return v;
+	}
+	
+	/*
+	 * Task 1 - Complexity - Question 3.
+	 * Created this method to reduce complexity in calling method getEventsForDate. 
+	 */
+	private static Vector getEventsVector(Day d) {
+		Vector v = new Vector();
+		Elements els = d.getElement().getChildElements("event");
+		for (int i = 0; i < els.size(); i++)
+			v.add(new EventImpl(els.get(i)));
 		return v;
 	}
 
