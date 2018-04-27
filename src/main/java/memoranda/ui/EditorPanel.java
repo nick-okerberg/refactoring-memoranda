@@ -164,6 +164,81 @@ public class EditorPanel extends JPanel {
 
 		this.setLayout(borderLayout1);
 
+		// TASK 2-1 SMELL WITHIN A CLASS
+		// Call private method to Initialize buttons since jbInit was too large of a method. 
+		jbInitButtons();
+
+		/*
+		 * printB.setAction(printAction); printB.setMaximumSize(new
+		 * Dimension(24, 24)); printB.setMinimumSize(new Dimension(24, 24));
+		 * printB.setPreferredSize(new Dimension(24, 24));
+		 * printB.setRequestFocusEnabled(false);
+		 * printB.setToolTipText(Local.getString("Print"));
+		 * printB.setBorderPainted(false); printB.setFocusable(false);
+		 * printB.setText("");
+		 */
+
+		jPanel1.setLayout(borderLayout2);
+		titleLabel.setFont(new java.awt.Font("Dialog", 1, 10));
+		titleLabel.setText(Local.getString("Title") + "  ");
+		titleField.setText("");
+		editorToolBar.setFloatable(false);
+		editor.editToolbar.setFloatable(false);
+		titleBar.setFloatable(false);
+		this.add(jPanel1, BorderLayout.CENTER);
+		editorToolBar.add(newB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(historyBackB, null);
+		editorToolBar.add(historyForwardB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(undoB, null);
+		editorToolBar.add(redoB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(cutB, null);
+		editorToolBar.add(copyB, null);
+		editorToolBar.add(pasteB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(insDateB, null);
+		editorToolBar.add(insTimeB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(importB, null);
+		editorToolBar.add(exportB, null);
+		editorToolBar.addSeparator(new Dimension(8, 24));
+		editorToolBar.add(previewB, null);
+		// editorToolBar.add(printB, null);
+		jPanel1.add(editorToolBar, BorderLayout.NORTH);
+		jPanel1.add(editor, BorderLayout.CENTER);
+		this.add(titleBar, BorderLayout.NORTH);
+		titleBar.add(titleLabel, null);
+		titleBar.add(titleField, null);
+		initCSS();
+		editor.editor.setAntiAlias(Configuration.get("ANTIALIAS_TEXT").toString().equalsIgnoreCase("yes"));
+		// editor.editor.enableInputMethods(false);
+		// editor.editor.getInputContext().selectInputMethod(Locale.getDefault());
+		titleField.addKeyListener(new KeyListener() {
+
+			public void keyPressed(KeyEvent ke) {
+				if (ke.getKeyCode() == KeyEvent.VK_ENTER)
+					editor.editor.requestFocus();
+			}
+
+			public void keyReleased(KeyEvent arg0) {
+			}
+
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
+	}
+
+	/**
+	 * TASK 2-1 SMELL WITHIN A CLASS
+	 * TASK 3-1 SMELL WITHIN A CLASS
+	 * 
+	 * New private method jbInitButtons created here to address code smell of large
+	 * method "jbInit". Called by jbInit to initialize all of the buttons for EditorPanel.  
+	 * 
+	 */
+	private void jbInitButtons() {
 		newB.setAction(newAction);
 		newB.setMaximumSize(new Dimension(24, 24));
 		newB.setMinimumSize(new Dimension(24, 24));
@@ -293,69 +368,8 @@ public class EditorPanel extends JPanel {
 		previewB.setMinimumSize(new Dimension(24, 24));
 		previewB.setMaximumSize(new Dimension(24, 24));
 		previewB.setText("");
-
-		/*
-		 * printB.setAction(printAction); printB.setMaximumSize(new
-		 * Dimension(24, 24)); printB.setMinimumSize(new Dimension(24, 24));
-		 * printB.setPreferredSize(new Dimension(24, 24));
-		 * printB.setRequestFocusEnabled(false);
-		 * printB.setToolTipText(Local.getString("Print"));
-		 * printB.setBorderPainted(false); printB.setFocusable(false);
-		 * printB.setText("");
-		 */
-
-		jPanel1.setLayout(borderLayout2);
-		titleLabel.setFont(new java.awt.Font("Dialog", 1, 10));
-		titleLabel.setText(Local.getString("Title") + "  ");
-		titleField.setText("");
-		editorToolBar.setFloatable(false);
-		editor.editToolbar.setFloatable(false);
-		titleBar.setFloatable(false);
-		this.add(jPanel1, BorderLayout.CENTER);
-		editorToolBar.add(newB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(historyBackB, null);
-		editorToolBar.add(historyForwardB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(undoB, null);
-		editorToolBar.add(redoB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(cutB, null);
-		editorToolBar.add(copyB, null);
-		editorToolBar.add(pasteB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(insDateB, null);
-		editorToolBar.add(insTimeB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(importB, null);
-		editorToolBar.add(exportB, null);
-		editorToolBar.addSeparator(new Dimension(8, 24));
-		editorToolBar.add(previewB, null);
-		// editorToolBar.add(printB, null);
-		jPanel1.add(editorToolBar, BorderLayout.NORTH);
-		jPanel1.add(editor, BorderLayout.CENTER);
-		this.add(titleBar, BorderLayout.NORTH);
-		titleBar.add(titleLabel, null);
-		titleBar.add(titleField, null);
-		initCSS();
-		editor.editor.setAntiAlias(Configuration.get("ANTIALIAS_TEXT").toString().equalsIgnoreCase("yes"));
-		// editor.editor.enableInputMethods(false);
-		// editor.editor.getInputContext().selectInputMethod(Locale.getDefault());
-		titleField.addKeyListener(new KeyListener() {
-
-			public void keyPressed(KeyEvent ke) {
-				if (ke.getKeyCode() == KeyEvent.VK_ENTER)
-					editor.editor.requestFocus();
-			}
-
-			public void keyReleased(KeyEvent arg0) {
-			}
-
-			public void keyTyped(KeyEvent arg0) {
-			}
-		});
 	}
-
+	
 	public void initCSS() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(
 				main.java.memoranda.ui.EditorPanel.class
