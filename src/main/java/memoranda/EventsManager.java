@@ -7,6 +7,7 @@
  */
 package main.java.memoranda;
 
+import java.security.Policy.Parameters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -245,26 +246,50 @@ public class EventsManager {
 		return getEventsForDate(CalendarDate.today());
 	}
 
-	public static IEvent getEvent(CalendarDate date, int hh, int mm) {
-		Day d = getDay(date);
+	/*
+	 * TASK 2-2 SMELL BETWEEN CLASSES
+	 * TASK 3-2 SMELL BETWEEN CLASSES
+	 * 
+	 * Smell: Primitive Obsession / Too many parameters.
+	 * 
+	 * This getEvent method is returning an IEVent object, however it is taking in too
+	 * many primitive parameters which could easily be an object itself. 
+	 * Instead of taking in the CalendarDate, hours, and minutes, take in a single new 
+	 * object defined "DateWithTime".  
+	 * 
+	 */
+	public static IEvent getEvent(DateWithTime dt) {
+		Day d = getDay(dt.get_cd());
 		if (d == null)
 			return null;
 		Elements els = d.getElement().getChildElements("event");
 		for (int i = 0; i < els.size(); i++) {
 			Element el = els.get(i);
 			if ((new Integer(el.getAttribute("hour").getValue()).intValue()
-				== hh)
+				== dt.get_hours())
 				&& (new Integer(el.getAttribute("min").getValue()).intValue()
-					== mm))
+					== dt.get_minutes()))
 				return new EventImpl(el);
 		}
 		return null;
 	}
 
 	public static void removeEvent(CalendarDate date, int hh, int mm) {
+		
+		// TASK 2-2 SMELL BETWEEN CLASSES
+		// New DateWithTime object. 
+		DateWithTime dt = new DateWithTime();
+		dt.set_cd(date);
+		dt.set_hours(hh);
+		dt.set_minutes(mm);
+		// End of TASK 2-2 modification
+		
 		Day d = getDay(date);
 		if (d == null)
-			d.getElement().removeChild(getEvent(date, hh, mm).getContent());
+			// TASK 2-2 SMELL BETWEEN CLASSES
+			//Call getEvent using the new DateWithTime object instead of multiple Parameters.class 
+			//d.getElement().removeChild(getEvent(date, hh, mm).getContent());
+			d.getElement().removeChild(getEvent(dt).getContent());
 	}
 
 	public static void removeEvent(IEvent ev) {
